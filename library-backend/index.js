@@ -128,6 +128,11 @@ const typeDefs = /*GraphQL*/`
             published: Int!,
             genres: [String],
         ): Book
+        
+        editAuthor(
+        name: String!,
+        setBornTo: Int!
+        ): Author
     }
 `
 
@@ -152,19 +157,26 @@ const resolvers = {
         }
     },
     Mutation: {
-      addBook: (root, args) => {
-          const book = {...args, id: uuid()}
-          books = books.concat(book)
+        addBook: (root, args) => {
+            const book = {...args, id: uuid()}
+            books = books.concat(book)
 
-          if (!authors.find(author => author.name === args.author)) {
-              const newAuthor = { name: args.author, id: uuid() }
-              authors = authors.concat(newAuthor)
-          }
+            if (!authors.find(author => author.name === args.author)) {
+                const newAuthor = {name: args.author, id: uuid()}
+                authors = authors.concat(newAuthor)
+            }
 
-          return book
+            return book
+        },
+
+      editAuthor: (root, args) => {
+          const authorToEdit = authors.find(author => author.name === args.name)
+          authorToEdit.born = args.setBornTo
+          authors.map(author => author.name === args.name ? authorToEdit: author)
+          return authorToEdit
       }
-    }
-}
+}}
+
 
 const server = new ApolloServer({
     typeDefs,
