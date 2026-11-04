@@ -110,7 +110,7 @@ const typeDefs = /*GraphQL*/`
     type Author {
         name: String!,
         id: ID!,
-        born: Int!,
+        born: Int,
         bookCount: Int!
     }
     
@@ -153,9 +153,14 @@ const resolvers = {
     },
     Mutation: {
       addBook: (root, args) => {
-          //TODO lisää mahdollinen uusi author authors-muuttujaan
           const book = {...args, id: uuid()}
           books = books.concat(book)
+
+          if (!authors.find(author => author.name === args.author)) {
+              const newAuthor = { name: args.author, id: uuid() }
+              authors = authors.concat(newAuthor)
+          }
+
           return book
       }
     }
