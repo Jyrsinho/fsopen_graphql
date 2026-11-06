@@ -1,32 +1,34 @@
-const Books = (props) => {
-  if (!props.show) {
-    return null
-  }
 
-  const books = []
+const Books = ({show, books}) => {
+    
+    console.log('books- ', books)
 
-  return (
-    <div>
-      <h2>books</h2>
+    if (!show) {
+        return null
+    }
 
-      <table>
-        <tbody>
-          <tr>
-            <th></th>
-            <th>author</th>
-            <th>published</th>
-          </tr>
-          {books.map((a) => (
-            <tr key={a.id}>
-              <td>{a.title}</td>
-              <td>{a.author}</td>
-              <td>{a.published}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
+    return (
+        <div>
+            <h2>books</h2>
+
+            <table>
+                <tbody>
+                <tr>
+                    <th></th>
+                    <th>author</th>
+                    <th>published</th>
+                </tr>
+                {books.map((a) => (
+                    <tr key={a.id}>
+                        <td>{a.title}</td>
+                        <td>{a.author}</td>
+                        <td>{a.published}</td>
+                    </tr>
+                ))}
+                </tbody>
+            </table>
+        </div>
+    )
 }
 
 export default Books
