@@ -1,6 +1,7 @@
 const {ApolloServer} = require("@apollo/server")
 const {startStandaloneServer} = require("@apollo/server/standalone")
 const { v1: uuid } = require('uuid')
+const {GraphQLError} = require("graphql/error");
 
 let authors = [
     {
@@ -171,7 +172,9 @@ const resolvers = {
 
       editAuthor: (root, args) => {
           const authorToEdit = authors.find(author => author.name === args.name)
-          if (!authorToEdit) return null
+          if (!authorToEdit) {
+              throw new GraphQLError(`authorToEdit is missing ${args.name}`)
+          }
           authorToEdit.born = args.setBornTo
           authors.map(author => author.name === args.name ? authorToEdit: author)
           return authorToEdit
