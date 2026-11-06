@@ -1,16 +1,28 @@
+import {useQuery} from "@apollo/client/react";
+import {ALL_BOOKS} from "../graphql/queries.js";
 
-const Books = ({show, books}) => {
-    
-    console.log('books- ', books)
+const Books = ({show }) => {
+
+    const bookResult = useQuery(ALL_BOOKS)
+    console.log('fetched books')
 
     if (!show) {
         return null
     }
 
+    if (bookResult.loading) {
+        return (
+            <div>
+                ...loading
+            </div>
+        )
+    }
+
+    const books = bookResult.data.allBooks
+
     return (
         <div>
             <h2>books</h2>
-
             <table>
                 <tbody>
                 <tr>

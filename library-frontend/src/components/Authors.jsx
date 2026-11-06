@@ -1,8 +1,24 @@
+import {ALL_AUTHORS } from "../graphql/queries.js";
+import {useQuery} from "@apollo/client/react";
 
-const Authors = ({show, authors}) => {
+const Authors = ({show }) => {
+
+    const authorResult = useQuery(ALL_AUTHORS)
+    console.log('fetched authors')
+
     if (!show) {
         return null
     }
+
+    if (authorResult.loading ) {
+        return (
+            <div>
+                ...loading
+            </div>
+        )
+    }
+
+    const authors = authorResult.data.allAuthors
 
     return (
         <div>
