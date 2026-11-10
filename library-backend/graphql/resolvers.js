@@ -1,4 +1,3 @@
-const {models} = require("mongoose");
 const Book = require('../models/book')
 const Author = require('../models/author')
 const {GraphQLError} = require("graphql/error");
@@ -8,18 +7,10 @@ const resolvers = {
         bookCount: () => Book.collection.countDocuments(),
         authorCount: () => Author.collection.countDocuments(),
         allBooks: async (root, args) => {
-            return Book.find({})
+            return Book.find({}).populate('author');
         },
         allAuthors: async (root, authors) => {
             return Author.find({})
-        }
-    },
-    Book: {
-        author: ({name, birthYear}) => {
-            return {
-                name: name,
-                birthYear: birthYear,
-            }
         }
     },
     Mutation: {
@@ -34,9 +25,10 @@ const resolvers = {
                 })
             }
 
-            const existingAuthor = await Author.findOne({name: args.author})
-            const author = existingAuthor ?? new Author({name: args.author})
-            await author.save()
+            let author = await Author.findOne({name: args.author})
+            if (!author) {
+                author = new Author({name: args.author})
+            }
 
             const book = new Book({
                 title: args.title,
@@ -44,17 +36,28 @@ const resolvers = {
                 published: args.published,
             })
 
-            return book.save()
+            try {
+                await author.save()
+                await book.save()
+            } catch (error) {
+                throw new GraphQLError(`Error creating book: ${error.message}`, {
+                    extensions: {
+                        code: 'BAD_USER_INPUT',
+                        invalidArgs: args.setBornTo,
+                        error
+                    }
+                })
+            }
+            return book
         },
 
-        editAuthor: (root, args) => {
-            const authorToEdit = authors.find(author => author.name === args.name)
+        editAuthor: async (root, args) => {
+            const authorToEdit = await Author.findOne({name: args.name})
             if (!authorToEdit) {
                 throw new GraphQLError(`authorToEdit is missing ${args.name}`)
             }
             authorToEdit.born = args.setBornTo
-            authors.map(author => author.name === args.name ? authorToEdit : author)
-            return authorToEdit
+            return authorToEdit.save()
         }
     }
 }
