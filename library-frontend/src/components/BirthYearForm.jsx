@@ -4,7 +4,6 @@ import {EDIT_AUTHOR} from "../graphql/mutations.js";
 import {ALL_AUTHORS} from "../graphql/queries.js";
 
 const BirthYearForm = ({authors}) => {
-
     let formStyle = {
         display: "flex",
         flexDirection: "column",
@@ -32,6 +31,7 @@ const BirthYearForm = ({authors}) => {
         })
     }
 
+    if (!authors.length) return null
 
     return (
         <div>

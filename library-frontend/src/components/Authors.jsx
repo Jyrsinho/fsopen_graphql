@@ -20,6 +20,10 @@ const Authors = ({show }) => {
     }
 
     const authors = authorResult.data.allAuthors
+    if (!authors) {
+        console.log('No Authors')
+        return null
+    }
 
     return (
         <div>
