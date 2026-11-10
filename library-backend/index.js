@@ -1,6 +1,6 @@
 require('dotenv').config()
-const startServer = require("./graphql/server")
 
+const startServer = require("./graphql/server")
 
 const PORT = process.env.PORT || 4000
 
