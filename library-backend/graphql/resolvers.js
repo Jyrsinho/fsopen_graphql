@@ -96,23 +96,13 @@ const resolvers = {
 
             const authorToEdit = await Author.findOne({name: args.name})
             if (!authorToEdit) {
-                throw new GraphQLError(`authorToEdit is missing ${args.name}`)
+                return null
             }
             authorToEdit.born = args.setBornTo
             return authorToEdit.save()
         },
 
         createUser: async (root, args) => {
-            const existingUser = User.find({username: args.username})
-            if (existingUser) {
-                throw new GraphQLError(`User already exists`, {
-                        extensions: {
-                            code: 'BAD_USER_INPUT',
-                            invalidArgs: args.username
-                        }
-                    }
-                )
-            }
             const user = new User({
                 username: args.username, favoriteGenre: args.favoriteGenre
             })
