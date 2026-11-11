@@ -9,6 +9,11 @@ const resolvers = {
         bookCount: () => Book.collection.countDocuments(),
         authorCount: () => Author.collection.countDocuments(),
         allBooks: async (root, args) => {
+            if (args.author) {
+                const author = await Author.findOne({name: args.author})
+                console.log('author', author)
+                return Book.find({author: author._id}).populate('author');
+            }
             return Book.find({}).populate('author');
         },
         allAuthors: async (root, authors) => {
@@ -19,6 +24,14 @@ const resolvers = {
         }
     },
     Mutation: {
+        _resetDatabase: async () => {
+            if (process.env.NODE_ENV !== 'test') {
+                throw new GraphQLError('_resetDatabase is only available in test mode',);
+            }
+            await Author.deleteMany({})
+            await Book.deleteMany({})
+            await User.deleteMany({})
+        },
         addBook: async (root, args, context) => {
             const currentUser = context.currentUser
 
