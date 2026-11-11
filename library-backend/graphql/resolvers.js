@@ -14,6 +14,9 @@ const resolvers = {
                 console.log('author', author)
                 return Book.find({author: author._id}).populate('author');
             }
+            if (args.genre) {
+                return Book.find( {genres: { $all: [args.genre] }})
+            }
             return Book.find({}).populate('author');
         },
         allAuthors: async (root, authors) => {
@@ -62,6 +65,7 @@ const resolvers = {
                 title: args.title,
                 author: author,
                 published: args.published,
+                genres: args.genres,
             })
 
             try {
