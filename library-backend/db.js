@@ -11,5 +11,6 @@ const connectToDatabase = async (uri) => {
         process.exit(1)
     }
 }
+// add comment
 
 module.exports = connectToDatabase
