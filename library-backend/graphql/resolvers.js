@@ -13,6 +13,9 @@ const resolvers = {
         },
         allAuthors: async (root, authors) => {
             return Author.find({})
+        },
+        me: async (root, args, context) => {
+            return context.currentUser
         }
     },
     Mutation: {
@@ -63,6 +66,16 @@ const resolvers = {
         },
 
         createUser: async (root, args) => {
+            const existingUser = User.find({username: args.username})
+            if (existingUser) {
+                throw new GraphQLError(`User already exists`, {
+                        extensions: {
+                            code: 'BAD_USER_INPUT',
+                            invalidArgs: args.username
+                        }
+                    }
+                )
+            }
             const user = new User({
                 username: args.username, favoriteGenre: args.favoriteGenre
             })
@@ -79,12 +92,14 @@ const resolvers = {
                 })
         },
         login: async (root, args) => {
-            const user = User.findOne({username: args.username})
+            console.log('inside login')
+            const user = await User.findOne({username: args.username})
+            console.log('user',  user)
             if (!user || args.password !== 'secret') {
                 throw new GraphQLError('login failed ', {
                     extensions: {
                         code: 'BAD_USER_INPUT',
-                        invalidArgs: [args.username,  args.password]
+                        invalidArgs: [args.username, args.password]
                     }
                 })
             }
@@ -92,8 +107,9 @@ const resolvers = {
                 username: user.username,
                 id: user._id
             }
-
-            return { value: jwt.sign(userForToken, process.env.JWT_SECRET) }
+            console.log('userForToken - ' , userForToken)
+            console.log('exiting login')
+            return {value: jwt.sign(userForToken, process.env.JWT_SECRET)}
         }
     }
 }
