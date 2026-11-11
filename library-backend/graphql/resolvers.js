@@ -19,7 +19,17 @@ const resolvers = {
         }
     },
     Mutation: {
-        addBook: async (root, args) => {
+        addBook: async (root, args, context) => {
+            const currentUser = context.currentUser
+
+            if (!currentUser) {
+                throw new GraphQLError('not authenticated', {
+                    extensions: {
+                        code: 'UNAUTHENTICATED',
+                    }
+                })
+            }
+
             const bookExists = await Book.exists({title: args.title})
             if (bookExists) {
                 throw new GraphQLError(`Book title must be unique ${args.title}`, {
@@ -56,7 +66,17 @@ const resolvers = {
             return book
         },
 
-        editAuthor: async (root, args) => {
+        editAuthor: async (root, args, context) => {
+            const currentUser = context.currentUser
+
+            if (!currentUser) {
+                throw new GraphQLError('not authenticated', {
+                    extensions: {
+                        code: 'UNAUTHENTICATED',
+                    }
+                })
+            }
+
             const authorToEdit = await Author.findOne({name: args.name})
             if (!authorToEdit) {
                 throw new GraphQLError(`authorToEdit is missing ${args.name}`)
