@@ -44,15 +44,15 @@ const typeDefs = /*GraphQL*/`
             name: String!,
             setBornTo: Int!
         ): Author
-        
+
         createUser(
-        username: String!,
-        favoriteGenre: String!,
+            username: String!,
+            favoriteGenre: String!,
         ) : User
-        
+
         login(
-        username: String!,
-        password: String!,
+            username: String!,
+            password: String!,
         ): Token
     }
 `

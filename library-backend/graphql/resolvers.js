@@ -1,5 +1,6 @@
 const Book = require('../models/book')
 const Author = require('../models/author')
+const User = require('../models/user')
 const {GraphQLError} = require("graphql/error");
 
 const resolvers = {
@@ -58,6 +59,23 @@ const resolvers = {
             }
             authorToEdit.born = args.setBornTo
             return authorToEdit.save()
+        },
+
+        createUser: async (root, args) => {
+            const user = new User({
+                username: args.username, favoriteGenre: args.favoriteGenre
+            })
+
+            return user.save()
+                .catch(error => {
+                    throw new GraphQLError(`Error creating user: ${error.message}`, {
+                        extensions: {
+                            code: 'BAD_USER_INPUT',
+                            invalidArgs: args.username,
+                            error
+                        }
+                    })
+                })
         }
     }
 }
