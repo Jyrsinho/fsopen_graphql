@@ -2,18 +2,35 @@ import {useQuery} from "@apollo/client/react";
 import {ALL_BOOKS} from "../graphql/queries.js";
 import {useState} from "react";
 
+const selectedStyle = {
+    border: "2px solid black",
+}
+
+const notSelectedStyle = {
+    border: "1px solid black",
+}
+
 const Books = ({show}) => {
     const genres = ['horror', 'programming', 'comedy']
-    const [selectedGenre, setSelectedGenre] = useState(null);
+    const [selectedGenres, setSelectedGenres] = useState([]);
 
     const bookResult = useQuery(ALL_BOOKS, {
         variables: {
-            genre: selectedGenre
+            genres: selectedGenres.length > 0 ? selectedGenres : undefined,
         },
         onError: err => {
             console.log(err)
         }
     })
+
+    const toggleSelectedGenres = (genre) => {
+        if (selectedGenres.includes(genre)) {
+            setSelectedGenres(selectedGenres.filter(genre => genre !== genre))
+        }else {
+            setSelectedGenres([...selectedGenres, genre])
+        }
+
+    }
 
     if (!show) {
         return null
@@ -27,7 +44,9 @@ const Books = ({show}) => {
         )
     }
 
+    console.log('bookResult', bookResult)
     const books = bookResult.data.allBooks
+    console.log('books', books)
 
     return (
         <div>
@@ -35,10 +54,8 @@ const Books = ({show}) => {
             <h3>select genres:</h3>
             {genres.map(genre => (
                 <button key={genre}
-                        onClick={() => setSelectedGenre(genre)}
-                        style={{
-                            color: selectedGenre === genre ? 'red' : 'green'
-                        }}
+                        onClick={() => toggleSelectedGenres(genre)}
+                        style={ selectedGenres.includes(genre) ? selectedStyle : notSelectedStyle }
                 >{genre}</button>
             ))}
             <table>
