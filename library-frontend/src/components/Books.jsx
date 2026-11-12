@@ -5,6 +5,7 @@ const Books = ({show }) => {
 
     const bookResult = useQuery(ALL_BOOKS)
     console.log('fetched books')
+    console.log('bookResult', bookResult)
 
     if (!show) {
         return null
@@ -33,7 +34,7 @@ const Books = ({show }) => {
                 {books.map((a) => (
                     <tr key={a.id}>
                         <td>{a.title}</td>
-                        <td>{a.author}</td>
+                        <td>{a.author.name}</td>
                         <td>{a.published}</td>
                     </tr>
                 ))}
