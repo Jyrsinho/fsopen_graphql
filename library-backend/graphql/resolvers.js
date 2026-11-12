@@ -128,11 +128,8 @@ const resolvers = {
                 })
         },
         login: async (root, args) => {
-            console.log('inside login')
             const user = await User.findOne({username: args.username})
-            console.log('user',  user)
             if (!user || args.password !== 'secret') {
-                console.log('throwing new graphQLError')
                 throw new GraphQLError('login failed ', {
                     extensions: {
                         code: 'BAD_USER_INPUT',
@@ -144,8 +141,6 @@ const resolvers = {
                 username: user.username,
                 id: user._id
             }
-            console.log('userForToken - ' , userForToken)
-            console.log('exiting login')
             return {value: jwt.sign(userForToken, process.env.JWT_SECRET)}
         }
     }
