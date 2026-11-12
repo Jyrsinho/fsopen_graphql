@@ -21,10 +21,6 @@ export const Recommendations = ({show}) => {
 
     if (!show) return null
     
-    console.log('recommendations', recommendations)
-    const randomID = recommendations[0]._id
-    console.log('randomID', randomID)    
-
     return (
         <div>
             <h3>recommendations:</h3>

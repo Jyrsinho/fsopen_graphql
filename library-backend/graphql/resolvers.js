@@ -23,14 +23,10 @@ const resolvers = {
             return Author.find({})
         },
         recommendations: async (root, args, context) => {
-            console.log('recommendations resolver: ')
             const currentUser = await User.findById(context.currentUser._id)
             if (!currentUser) return null
-            console.log('currentUser', currentUser)
             const favoriteGenre = currentUser.favoriteGenre
-            console.log('favoriteGenre', favoriteGenre)
             const recommendedBooks = await Book.find({genres: { $all: favoriteGenre}}).populate('author');
-            console.log('recommendedBooks:', recommendedBooks)
             return recommendedBooks
 
         },
