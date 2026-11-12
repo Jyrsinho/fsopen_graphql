@@ -7,7 +7,7 @@ describe('Library app', () => {
     await page.goto('/')
   })
 
-  test('front page shows authors by default', async ({ page }) => {
+  test.only('front page shows authors by default', async ({ page }) => {
     await expect(page.getByRole('heading', { name: 'authors' })).toBeVisible()
     await expect(page.getByText('Robert Martin')).toBeVisible()
     await expect(page.getByText('Martin Fowler')).toBeVisible()

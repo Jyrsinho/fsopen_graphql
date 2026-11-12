@@ -13,10 +13,11 @@ export const Recommendations = ({show}) => {
         )
     }
 
+    if (!show) return null
+
     const recommendations = recommendationResult.data.recommendations
 
-    if (!show) return null
-    
+
     return (
         <div>
             <h3>recommendations:</h3>

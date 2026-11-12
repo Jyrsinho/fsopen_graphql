@@ -2,7 +2,7 @@ import {useMutation} from "@apollo/client/react";
 import {LOGIN} from "../graphql/mutations.js";
 import {useState} from "react";
 
-const LoginForm = ({show, setToken}) => {
+const LoginForm = ({show, setToken, notify}) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
@@ -14,6 +14,8 @@ const LoginForm = ({show, setToken}) => {
             localStorage.setItem('library-user-token', token)
         },
         onError: (error) => {
+            notify(error.message)
+            console.log(error)
         }
     })
 
@@ -26,6 +28,8 @@ const LoginForm = ({show, setToken}) => {
                 }
             })
         }catch (error) {
+            notify('login failed')
+            console.log(error)
         }
     }
 
@@ -38,7 +42,7 @@ const LoginForm = ({show, setToken}) => {
             <h3>login:</h3>
             <form>
                 <div>
-                    <label>name:
+                    <label>username:
                         <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
                     </label>
                 </div>
@@ -47,8 +51,8 @@ const LoginForm = ({show, setToken}) => {
                         <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
                     </label>
                 </div>
+                <button onClick={handleSubmit}>login</button>
             </form>
-            <button onClick={handleSubmit}>Login</button>
         </div>
     )
 }
