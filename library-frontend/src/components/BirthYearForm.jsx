@@ -35,12 +35,12 @@ const BirthYearForm = ({authors}) => {
 
     return (
         <div>
-            <h3>edit birthyear</h3>
+            <h3>Set birthyear</h3>
             <form style={formStyle} onSubmit={(e) => submit(e)}>
                 <select value={name} onChange={(e => setName(e.target.value))} name={"name"} id={"name-select"}>
                     {authors.map(author => (<option key={author.id} value={author.name}>{author.name}</option>))}
                 </select>
-                <label>birth year
+                <label>born
                     <input type={"number"} value={birthYear} onChange={(e) => setBirthYear(e.target.value)}/>
                 </label>
                 <button type={"submit"}>update author</button>
