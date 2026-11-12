@@ -13,6 +13,7 @@ const notSelectedStyle = {
 const Books = ({show}) => {
     const genres = ['horror', 'programming', 'comedy']
     const [selectedGenres, setSelectedGenres] = useState([]);
+    console.log('selectedGenres: ', selectedGenres)
 
     const bookResult = useQuery(ALL_BOOKS, {
         variables: {
@@ -44,9 +45,7 @@ const Books = ({show}) => {
         )
     }
 
-    console.log('bookResult', bookResult)
     const books = bookResult.data.allBooks
-    console.log('books', books)
 
     return (
         <div>

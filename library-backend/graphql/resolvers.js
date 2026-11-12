@@ -9,8 +9,6 @@ const resolvers = {
         bookCount: () => Book.collection.countDocuments(),
         authorCount: () => Author.collection.countDocuments(),
         allBooks: async (root, args) => {
-            console.log('Inside allBooks resolver:')
-            console.log('args - ', args)
             if (args.author) {
                 const author = await Author.findOne({name: args.author})
                 console.log('author', author)
