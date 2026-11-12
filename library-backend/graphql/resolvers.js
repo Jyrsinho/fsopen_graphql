@@ -38,6 +38,9 @@ const resolvers = {
         },
         addBook: async (root, args, context) => {
             const currentUser = context.currentUser
+            console.log('Adding Book resolver:')
+            console.log('context', context)
+            console.log('currentUser: -', currentUser)
 
             if (!currentUser) {
                 throw new GraphQLError('not authenticated', {
