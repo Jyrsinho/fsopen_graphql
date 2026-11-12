@@ -26,9 +26,7 @@ const resolvers = {
             const currentUser = await User.findById(context.currentUser._id)
             if (!currentUser) return null
             const favoriteGenre = currentUser.favoriteGenre
-            const recommendedBooks = await Book.find({genres: { $all: favoriteGenre}}).populate('author');
-            return recommendedBooks
-
+            return Book.find({genres: { $all: favoriteGenre}}).populate('author');
         },
         me: async (root, args, context) => {
             return context.currentUser
