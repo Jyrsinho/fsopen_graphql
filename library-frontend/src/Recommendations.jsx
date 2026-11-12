@@ -14,14 +14,6 @@ export const Recommendations = ({show}) => {
     }
 
     const recommendations = recommendationResult.data.recommendations
-    /*
-    if (!recommendations) return (
-        <div>
-            no recommendations
-        </div>
-    )
-
-     */
 
     if (!show) return null
     
