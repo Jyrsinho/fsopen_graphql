@@ -2,7 +2,7 @@ import BirthYearForm from "./BirthYearForm.jsx";
 import {useQuery} from "@apollo/client/react";
 import {ALL_AUTHORS} from "../graphql/queries.js";
 
-const Authors = ({show}) => {
+const Authors = ({show, token}) => {
 
     const authorResult = useQuery(ALL_AUTHORS)
 
@@ -37,7 +37,7 @@ const Authors = ({show}) => {
                 ))}
                 </tbody>
             </table>
-            <BirthYearForm authors={authors}/>
+            {token && <BirthYearForm authors={authors}/> }
         </div>
     )
 }
