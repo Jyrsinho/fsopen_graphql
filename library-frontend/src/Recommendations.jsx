@@ -5,7 +5,7 @@ export const Recommendations = ({show}) => {
     const meResult = useQuery(ME)
 
     const recommendationResult = useQuery(RECOMMENDATIONS)
-    if (recommendationResult.loading) {
+    if (recommendationResult.loading || meResult.loading) {
         return (
             <div>
                 ...loading
@@ -14,11 +14,14 @@ export const Recommendations = ({show}) => {
     }
 
     const recommendations = recommendationResult.data.recommendations
+    /*
     if (!recommendations) return (
         <div>
             no recommendations
         </div>
     )
+
+     */
 
     if (!show) return null
     
