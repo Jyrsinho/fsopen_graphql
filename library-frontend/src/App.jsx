@@ -4,8 +4,8 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 
 const App = () => {
+    console.log('APP - ')
     const [page, setPage] = useState('authors')
-
 
     return (
         <div>
@@ -15,7 +15,7 @@ const App = () => {
                 <button onClick={() => setPage('add')}>add book</button>
             </div>
 
-            <Authors show={page === 'authors'}/>
+            <Authors show={page === 'authors'} />
             <Books show={page === 'books'}  />
             <NewBook show={page === 'add'}/>
         </div>

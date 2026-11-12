@@ -1,29 +1,23 @@
-import {ALL_AUTHORS } from "../graphql/queries.js";
-import {useQuery} from "@apollo/client/react";
 import BirthYearForm from "./BirthYearForm.jsx";
+import {useQuery} from "@apollo/client/react";
+import {ALL_AUTHORS} from "../graphql/queries.js";
 
-const Authors = ({show }) => {
+const Authors = ({show}) => {
 
     const authorResult = useQuery(ALL_AUTHORS)
-    console.log('fetched authors')
 
-    if (!show) {
-        return null
-    }
-
-    if (authorResult.loading ) {
+    if (authorResult.loading) {
         return (
             <div>
                 ...loading
             </div>
         )
     }
-
-    const authors = authorResult.data.allAuthors
-    if (!authors) {
-        console.log('No Authors')
+    if (!show) {
         return null
     }
+
+    const authors = authorResult.data.allAuthors
 
     return (
         <div>
@@ -31,9 +25,8 @@ const Authors = ({show }) => {
             <table>
                 <tbody>
                 <tr>
-                    <th></th>
+                    <th>name</th>
                     <th>born</th>
-                    <th>books</th>
                 </tr>
                 {authors.map((a) => (
                     <tr key={a.id}>
@@ -44,7 +37,7 @@ const Authors = ({show }) => {
                 ))}
                 </tbody>
             </table>
-            <BirthYearForm authors={authors} />
+            <BirthYearForm authors={authors}/>
         </div>
     )
 }
