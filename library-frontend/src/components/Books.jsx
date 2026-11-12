@@ -3,8 +3,17 @@ import {ALL_BOOKS} from "../graphql/queries.js";
 import {useState} from "react";
 
 const Books = ({show}) => {
-    const [filter, setFilter] = useState('')
-    const bookResult = useQuery(ALL_BOOKS)
+    const genres = ['horror', 'programming', 'comedy']
+    const [selectedGenre, setSelectedGenre] = useState(null);
+
+    const bookResult = useQuery(ALL_BOOKS, {
+        variables: {
+            genre: selectedGenre
+        },
+        onError: err => {
+            console.log(err)
+        }
+    })
 
     if (!show) {
         return null
@@ -18,21 +27,20 @@ const Books = ({show}) => {
         )
     }
 
-
-    const books = (filter.length > 1)
-        ? bookResult.data.allBooks.filter( book => {
-            const genres = book.genres
-            const includesFilter = (element) => element.includes(filter)
-            return genres.some(includesFilter)
-        })
-        : bookResult.data.allBooks
+    const books = bookResult.data.allBooks
 
     return (
         <div>
             <h2>books</h2>
-            <label>filter books by genre:
-                <input type={'text'} value={filter} onChange={(e) => setFilter(e.target.value)} />
-            </label>
+            <h3>select genres:</h3>
+            {genres.map(genre => (
+                <button key={genre}
+                        onClick={() => setSelectedGenre(genre)}
+                        style={{
+                            color: selectedGenre === genre ? 'red' : 'green'
+                        }}
+                >{genre}</button>
+            ))}
             <table>
                 <tbody>
                 <tr>

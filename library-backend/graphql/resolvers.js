@@ -9,13 +9,15 @@ const resolvers = {
         bookCount: () => Book.collection.countDocuments(),
         authorCount: () => Author.collection.countDocuments(),
         allBooks: async (root, args) => {
+            console.log('Inside allBooks resolver:')
+            console.log('args - ', args)
             if (args.author) {
                 const author = await Author.findOne({name: args.author})
                 console.log('author', author)
                 return Book.find({author: author._id}).populate('author');
             }
             if (args.genre) {
-                return Book.find( {genres: { $all: [args.genre] }})
+                return Book.find( {genres: { $all: [args.genre] }}).populate('author');
             }
             return Book.find({}).populate('author');
         },
