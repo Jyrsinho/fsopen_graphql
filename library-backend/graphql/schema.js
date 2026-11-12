@@ -27,6 +27,7 @@ const typeDefs = /*GraphQL*/`
     type Query {
         bookCount: Int
         authorCount: Int
+        recommendations: [Book!]!
         allBooks(author: String, genre: String): [Book]
         allAuthors: [Author]
         me: User
