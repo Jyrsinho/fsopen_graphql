@@ -2,7 +2,7 @@ import {useMutation} from "@apollo/client/react";
 import {LOGIN} from "../graphql/mutations.js";
 import {useState} from "react";
 
-const LoginForm = ({show, setToken, notify}) => {
+const LoginForm = ({show, setToken, notify, setPage}) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
@@ -12,25 +12,19 @@ const LoginForm = ({show, setToken, notify}) => {
             const token = data.login.value
             setToken(token)
             localStorage.setItem('library-user-token', token)
+            setPage('authors')
+            console.log('login completed')
         },
         onError: (error) => {
+            console.log('Failure logging in')
             notify(error.message)
-            console.log(error)
+            console.log(error.message)
         }
     })
 
-    function handleSubmit() {
-        try {
-            login({
-                variables: {
-                    username,
-                    password,
-                }
-            })
-        }catch (error) {
-            notify('login failed')
-            console.log(error)
-        }
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        login({variables: {username, password,}})
     }
 
     if (!show) {
@@ -40,7 +34,7 @@ const LoginForm = ({show, setToken, notify}) => {
     return (
         <div>
             <h3>login:</h3>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div>
                     <label>username:
                         <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
@@ -51,7 +45,7 @@ const LoginForm = ({show, setToken, notify}) => {
                         <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
                     </label>
                 </div>
-                <button onClick={handleSubmit}>login</button>
+                <button type={"submit"}>login</button>
             </form>
         </div>
     )
