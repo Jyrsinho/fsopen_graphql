@@ -16,6 +16,12 @@ export const ALL_AUTHORS = gql`
             id
         }}
 `
+/*
+export const ALL_GENRES = gql`
+query {
+}`
+
+ */
 
 export const RECOMMENDATIONS = gql`
 query {

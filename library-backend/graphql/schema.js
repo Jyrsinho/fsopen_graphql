@@ -30,6 +30,7 @@ const typeDefs = /*GraphQL*/`
         recommendations: [Book!]!
         allBooks(author: String, genres: [String]): [Book]
         allAuthors: [Author]
+        allGenres: [String!]!
         me: User
     }
 

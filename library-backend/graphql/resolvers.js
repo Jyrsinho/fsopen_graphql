@@ -22,6 +22,9 @@ const resolvers = {
         allAuthors: async (root, args) => {
             return Author.find({})
         },
+        allGenres: async (root, args) => {
+            return Book.distinct('genres')
+        },
         recommendations: async (root, args, context) => {
             const currentUser = await User.findById(context.currentUser._id)
             if (!currentUser) return null
