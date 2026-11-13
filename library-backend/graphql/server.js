@@ -13,8 +13,6 @@ const getUserFromAuthHeader = async (auth) => {
     console.log('getUserFromAuthHeader: ')
     console.log(decodedToken)
     return User.findById(decodedToken.id)
-
-
 }
 
 const startServer = (port) => {

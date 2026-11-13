@@ -26,10 +26,17 @@ const resolvers = {
             return Book.distinct('genres')
         },
         recommendations: async (root, args, context) => {
+            console.log('recommendations resolver')
             const currentUser = await User.findById(context.currentUser._id)
-            if (!currentUser) return null
+            console.log('currentuser - ', currentUser)
+            if (!currentUser) {
+                throw new GraphQLError('User not found')
+            }
             const favoriteGenre = currentUser.favoriteGenre
-            return Book.find({genres: { $all: favoriteGenre}}).populate('author');
+            console.log('favoritegenre', favoriteGenre)
+            const recommendations = await Book.find({genres: { $all: favoriteGenre}}).populate('author');
+            console.log('recommendations - ', recommendations)
+            return recommendations
         },
         me: async (root, args, context) => {
             return context.currentUser

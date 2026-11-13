@@ -10,7 +10,7 @@ const notSelectedStyle = {
     border: "1px solid black",
 }
 
-const Books = ({show}) => {
+const Books = ({show }) => {
     const [selectedGenres, setSelectedGenres] = useState([]);
 
     const genresResult = useQuery(ALL_GENRES, {
@@ -30,7 +30,10 @@ const Books = ({show}) => {
     })
 
     const toggleSelectedGenres = (toggledGenre) => {
-        if (toggledGenre === "all genres") setSelectedGenres([])
+        if (toggledGenre === "all genres") {
+            setSelectedGenres([])
+            return
+        }
         if (selectedGenres.includes(toggledGenre)) {
             const newGenres = selectedGenres.filter(genre => genre !== toggledGenre)
             setSelectedGenres(newGenres)
@@ -54,12 +57,11 @@ const Books = ({show}) => {
 
     const books = bookResult.data.allBooks
     const genres = [...genresResult.data.allGenres, "all genres"]
-    console.log('genres - ', genres)
 
     return (
         <div>
             <h2>books</h2>
-            <h3>select genres:</h3>
+            <h3>in genre:</h3>
             {genres.map(genre => (
                 <button key={genre}
                         onClick={() => toggleSelectedGenres(genre)}

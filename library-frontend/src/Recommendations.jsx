@@ -1,11 +1,17 @@
 import {useQuery} from "@apollo/client/react";
 import {ME, RECOMMENDATIONS} from "./graphql/queries.js";
 
-export const Recommendations = ({show}) => {
+export const Recommendations = ({show, setError }) => {
+
+    const recommendationResult = useQuery(RECOMMENDATIONS, {
+        onError: (error) => {
+            console.error(error)
+            setError(error.message)
+        }
+    })
     const meResult = useQuery(ME)
 
-    const recommendationResult = useQuery(RECOMMENDATIONS)
-    if (recommendationResult.loading || meResult.loading) {
+    if (recommendationResult.loading) {
         return (
             <div>
                 ...loading
@@ -14,9 +20,8 @@ export const Recommendations = ({show}) => {
     }
 
     if (!show) return null
-
+    
     const recommendations = recommendationResult.data.recommendations
-
 
     return (
         <div>
