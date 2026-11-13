@@ -132,6 +132,9 @@ const resolvers = {
         },
         login: async (root, args) => {
             const user = await User.findOne({username: args.username})
+            console.log('Login: ')
+            console.log('User - ', user)
+            console.log('Password', args.password)
             if (!user || args.password !== 'secret') {
                 throw new GraphQLError('login failed ', {
                     extensions: {

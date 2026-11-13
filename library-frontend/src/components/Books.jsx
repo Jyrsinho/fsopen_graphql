@@ -30,6 +30,7 @@ const Books = ({show}) => {
     })
 
     const toggleSelectedGenres = (toggledGenre) => {
+        if (toggledGenre === "all genres") setSelectedGenres([])
         if (selectedGenres.includes(toggledGenre)) {
             const newGenres = selectedGenres.filter(genre => genre !== toggledGenre)
             setSelectedGenres(newGenres)
@@ -52,7 +53,7 @@ const Books = ({show}) => {
     }
 
     const books = bookResult.data.allBooks
-    const genres = genresResult.data.allGenres
+    const genres = [...genresResult.data.allGenres, "all genres"]
     console.log('genres - ', genres)
 
     return (
