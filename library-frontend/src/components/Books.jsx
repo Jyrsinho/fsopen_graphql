@@ -1,5 +1,5 @@
 import {useQuery} from "@apollo/client/react";
-import {ALL_BOOKS} from "../graphql/queries.js";
+import {ALL_BOOKS, ALL_GENRES} from "../graphql/queries.js";
 import {useState} from "react";
 
 const selectedStyle = {
@@ -11,9 +11,14 @@ const notSelectedStyle = {
 }
 
 const Books = ({show}) => {
-    const genres = ['horror', 'programming', 'comedy']
     const [selectedGenres, setSelectedGenres] = useState([]);
-    console.log('selectedGenres: ', selectedGenres)
+
+    const genresResult = useQuery(ALL_GENRES, {
+        onError: (err) => {
+            console.log('failed to fetch all the genres')
+            console.log(err)
+        }
+    })
 
     const bookResult = useQuery(ALL_BOOKS, {
         variables: {
@@ -24,11 +29,12 @@ const Books = ({show}) => {
         }
     })
 
-    const toggleSelectedGenres = (genre) => {
-        if (selectedGenres.includes(genre)) {
-            setSelectedGenres(selectedGenres.filter(genre => genre !== genre))
+    const toggleSelectedGenres = (toggledGenre) => {
+        if (selectedGenres.includes(toggledGenre)) {
+            const newGenres = selectedGenres.filter(genre => genre !== toggledGenre)
+            setSelectedGenres(newGenres)
         }else {
-            setSelectedGenres([...selectedGenres, genre])
+            setSelectedGenres([...selectedGenres, toggledGenre])
         }
 
     }
@@ -37,7 +43,7 @@ const Books = ({show}) => {
         return null
     }
 
-    if (bookResult.loading) {
+    if (bookResult.loading || genresResult.loading) {
         return (
             <div>
                 ...loading
@@ -46,6 +52,8 @@ const Books = ({show}) => {
     }
 
     const books = bookResult.data.allBooks
+    const genres = genresResult.data.allGenres
+    console.log('genres - ', genres)
 
     return (
         <div>
