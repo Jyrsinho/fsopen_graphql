@@ -27,6 +27,8 @@ const resolvers = {
         },
         recommendations: async (root, args, context) => {
             console.log('recommendations resolver')
+            console.log('User from context - ', context.currentUser)
+            // TODO tää voi kaatua jos currentuser on null
             const currentUser = await User.findById(context.currentUser._id)
             console.log('currentuser - ', currentUser)
             if (!currentUser) {
@@ -53,9 +55,6 @@ const resolvers = {
         },
         addBook: async (root, args, context) => {
             const currentUser = context.currentUser
-            console.log('Adding Book resolver:')
-            console.log('context', context)
-            console.log('currentUser: -', currentUser)
 
             if (!currentUser) {
                 throw new GraphQLError('not authenticated', {

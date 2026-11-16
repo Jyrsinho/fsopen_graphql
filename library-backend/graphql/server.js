@@ -12,7 +12,9 @@ const getUserFromAuthHeader = async (auth) => {
     const decodedToken = jwt.verify(auth.substring(7), process.env.JWT_SECRET)
     console.log('getUserFromAuthHeader: ')
     console.log(decodedToken)
-    return User.findById(decodedToken.id)
+    const userFromAuthHeader = await User.findById(decodedToken.id)
+    console.log('userFromAuthHear', userFromAuthHeader)
+    return userFromAuthHeader
 }
 
 const startServer = (port) => {
