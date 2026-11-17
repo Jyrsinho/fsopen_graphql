@@ -1,5 +1,5 @@
 import {useQuery} from "@apollo/client/react";
-import {ME, RECOMMENDATIONS} from "./graphql/queries.js";
+import {ME, RECOMMENDATIONS} from "../graphql/queries.js";
 
 export const Recommendations = ({show, setError}) => {
 
@@ -29,7 +29,7 @@ export const Recommendations = ({show, setError}) => {
     return (
         <div>
             <h3>recommendations:</h3>
-            <h4>books in your favorite genre {meResult.data.me.favoriteGenre}</h4>
+            <h4>books in your favorite genre <em>{meResult.data.me.favoriteGenre}</em></h4>
             <table>
                 <thead>
                 <tr>
