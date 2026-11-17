@@ -27,14 +27,12 @@ const resolvers = {
         },
         recommendations: async (root, args, context) => {
             console.log('recommendations resolver')
-            console.log('User from context - ', context.currentUser)
-            // TODO tää voi kaatua jos currentuser on null
-            const currentUser = await User.findById(context.currentUser._id)
-            console.log('currentuser - ', currentUser)
-            if (!currentUser) {
-                throw new GraphQLError('User not found')
+            console.log('context - ', context)
+            if (!context.currentUser) {
+                console.log('eipä löytynyt current useria')
+                return null
             }
-            const favoriteGenre = currentUser.favoriteGenre
+            const favoriteGenre = context.currentUser.favoriteGenre
             console.log('favoritegenre', favoriteGenre)
             const recommendations = await Book.find({genres: { $all: favoriteGenre}}).populate('author');
             console.log('recommendations - ', recommendations)

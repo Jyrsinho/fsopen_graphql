@@ -4,7 +4,7 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from "./components/LoginForm.jsx";
 import {useApolloClient} from "@apollo/client/react";
-import {Recommendations} from "./Recommendations.jsx";
+import Recommendations from "./Recommendations.jsx";
 import Notification from "./components/Notification.jsx";
 
 const App = () => {

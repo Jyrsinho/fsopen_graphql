@@ -10,11 +10,7 @@ const getUserFromAuthHeader = async (auth) => {
         return null
     }
     const decodedToken = jwt.verify(auth.substring(7), process.env.JWT_SECRET)
-    console.log('getUserFromAuthHeader: ')
-    console.log(decodedToken)
-    const userFromAuthHeader = await User.findById(decodedToken.id)
-    console.log('userFromAuthHear', userFromAuthHeader)
-    return userFromAuthHeader
+    return User.findById(decodedToken.id);
 }
 
 const startServer = (port) => {
@@ -31,6 +27,7 @@ const startServer = (port) => {
             return {currentUser}
         }
     }).then(({url}) => {
+        console.log(`Server ready at ${url}`)
     })
 }
 
