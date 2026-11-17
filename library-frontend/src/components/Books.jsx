@@ -11,9 +11,10 @@ const notSelectedStyle = {
 }
 
 const Books = ({show }) => {
-    const [selectedGenres, setSelectedGenres] = useState([]);
+    const [selectedGenre, setSelectedGenre] = useState(null);
 
     const genresResult = useQuery(ALL_GENRES, {
+        skip: !show,
         onError: (err) => {
             console.log('failed to fetch all the genres')
             console.log(err)
@@ -21,26 +22,21 @@ const Books = ({show }) => {
     })
 
     const bookResult = useQuery(ALL_BOOKS, {
+        skip: !show,
         variables: {
-            genres: selectedGenres.length > 0 ? selectedGenres : undefined,
+            genre: selectedGenre ?? undefined,
         },
         onError: err => {
             console.log(err)
         }
     })
 
-    const toggleSelectedGenres = (toggledGenre) => {
-        if (toggledGenre === "all genres") {
-            setSelectedGenres([])
+    const chooseSelectedGenre = (selectedGenre) => {
+        if (selectedGenre === "all genres") {
+            setSelectedGenre(null)
             return
         }
-        if (selectedGenres.includes(toggledGenre)) {
-            const newGenres = selectedGenres.filter(genre => genre !== toggledGenre)
-            setSelectedGenres(newGenres)
-        }else {
-            setSelectedGenres([...selectedGenres, toggledGenre])
-        }
-
+        setSelectedGenre(selectedGenre)
     }
 
     if (!show) {
@@ -64,8 +60,8 @@ const Books = ({show }) => {
             <h3>in genre:</h3>
             {genres.map(genre => (
                 <button key={genre}
-                        onClick={() => toggleSelectedGenres(genre)}
-                        style={ selectedGenres.includes(genre) ? selectedStyle : notSelectedStyle }
+                        onClick={() => chooseSelectedGenre(genre)}
+                        style={ (selectedGenre === genre) ? selectedStyle : notSelectedStyle }
                 >{genre}</button>
             ))}
             <table>
