@@ -14,8 +14,8 @@ const resolvers = {
                 console.log('author', author)
                 return Book.find({author: author._id}).populate('author');
             }
-            if (args.genres) {
-                return Book.find( {genres: { $in: args.genres }}).populate('author');
+            if (args.genre) {
+                return Book.find({genres: args.genre })
             }
             return Book.find({}).populate('author');
         },
