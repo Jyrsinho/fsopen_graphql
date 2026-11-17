@@ -24,16 +24,7 @@ export const Recommendations = ({show, setError}) => {
 
     if (!show) return null
 
-    console.log('RecommendationResult - ', recommendationResult)
-    if (!recommendationResult.data.recommendations || !meResult.data.me.favoriteGenre)  {
-        return (
-            <div>
-                no recommendations found.
-            </div>
-        )
-    }
     const recommendations = recommendationResult.data.recommendations
-    console.log('recommendations', recommendations)
 
     return (
         <div>
